@@ -44,11 +44,11 @@ class BST {
         return (ldep > rdep ? ldep : rdep) + 1;
     }
 
-    bool sea(Node* node, const T& val) const {
-        if (node == nullptr) return false;
-        if (val == node->data) return true;
-        if (val < node->data) return sea(node->left, val);
-        return sea(node->right, val);
+    int getCount(Node* node, const T& val) const {
+        if (node == nullptr) return 0;
+        if (val == node->data) return node->cnt;
+        if (val < node->data) return getCount(node->left, val);
+        return getCount(node->right, val);
     }
 
     void clr(Node* node) {
@@ -80,8 +80,8 @@ class BST {
         return getDep(root);
     }
 
-    bool search(const T& val) const {
-        return sea(root, val);
+    int search(const T& val) const {
+        return getCount(root, val);
     }
 
     int size() const {
