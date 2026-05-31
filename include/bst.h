@@ -9,25 +9,24 @@
 
 template<typename T>
 class BST {
- private:
+private:
     struct Node {
         T data;
         int cnt;
         Node* left;
         Node* right;
 
-        explicit Node(const T& val) : data(val), cnt(1), left(nullptr), right(nullptr) {}
+        Node(const T& val) : data(val), cnt(1), left(nullptr), right(nullptr) {}
     };
 
     Node* root;
-    int size;
+    int sz;
 
     Node* add(Node* node, const T& val) {
         if (node == nullptr) {
-            size++;
+            sz++;
             return new Node(val);
         }
-
         if (val < node->data) {
             node->left = add(node->left, val);
         } else if (val > node->data) {
@@ -38,37 +37,39 @@ class BST {
         return node;
     }
 
-    int getDepth(Node* node) const {
-        if (node == nullptr) return 0;
-        return 1 + std::max(getDepth(node->left), getDepth(node->right));
+    int getDep(Node* node) const {
+        if (node == nullptr) return -1;
+        int ldep = getDep(node->left);
+        int rdep = getDep(node->right);
+        return (ldep > rdep ? ldep : rdep) + 1;
     }
 
-    bool find(Node* node, const T& val) const {
+    bool sea(Node* node, const T& val) const {
         if (node == nullptr) return false;
         if (val == node->data) return true;
-        if (val < node->data) return find(node->left, val);
-        return find(node->right, val);
+        if (val < node->data) return sea(node->left, val);
+        return sea(node->right, val);
     }
 
-    void clean(Node* node) {
+    void clr(Node* node) {
         if (node == nullptr) return;
-        clean(node->left);
-        clean(node->right);
+        clr(node->left);
+        clr(node->right);
         delete node;
     }
 
-    void collect(Node* node, std::vector<std::pair<T, int>>& out) const {
+    void getAll(Node* node, std::vector<std::pair<T, int>>& vec) const {
         if (node == nullptr) return;
-        collect(node->left, out);
-        out.push_back({node->data, node->cnt});
-        collect(node->right, out);
+        getAll(node->left, vec);
+        vec.push_back({node->data, node->cnt});
+        getAll(node->right, vec);
     }
 
- public:
-    BST() : root(nullptr), size(0) {}
+public:
+    BST() : root(nullptr), sz(0) {}
 
     ~BST() {
-        clean(root);
+        clr(root);
     }
 
     void insert(const T& val) {
@@ -76,15 +77,15 @@ class BST {
     }
 
     int depth() const {
-        return getDepth(root);
+        return getDep(root);
     }
 
     bool search(const T& val) const {
-        return find(root, val);
+        return sea(root, val);
     }
 
-    int getSize() const {
-        return size;
+    int size() const {
+        return sz;
     }
 
     bool empty() const {
@@ -93,9 +94,9 @@ class BST {
 
     std::vector<std::pair<T, int>> getNodes() const {
         std::vector<std::pair<T, int>> res;
-        collect(root, res);
+        getAll(root, res);
         return res;
     }
 };
 
-#endif  // INCLUDE_BST_H_
+#endif
