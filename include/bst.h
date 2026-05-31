@@ -9,14 +9,14 @@
 
 template<typename T>
 class BST {
-private:
+ private:
     struct Node {
         T data;
         int cnt;
         Node* left;
         Node* right;
 
-        Node(const T& val) : data(val), cnt(1), left(nullptr), right(nullptr) {}
+        explicit Node(const T& val) : data(val), cnt(1), left(nullptr), right(nullptr) {}
     };
 
     Node* root;
@@ -65,7 +65,7 @@ private:
         getAll(node->right, vec);
     }
 
-public:
+ public:
     BST() : root(nullptr), sz(0) {}
 
     ~BST() {
@@ -99,4 +99,4 @@ public:
     }
 };
 
-#endif
+#endif  // INCLUDE_BST_H_
