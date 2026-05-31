@@ -1,3 +1,4 @@
+// Copyright 2021 NNTU-CS
 #include <iostream>
 #include <string>
 #include "bst.h"
@@ -8,7 +9,6 @@ void printFreq(BST<std::string>& tree);
 int main() {
     BST<std::string> tree;
     makeTree(tree, "src/war_peace.txt");
-    std::cout << "Tree size: " << tree.size() << std::endl;
     printFreq(tree);
     return 0;
 }
