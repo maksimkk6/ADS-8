@@ -10,29 +10,19 @@
 
 void makeTree(BST<std::string>& tree, const char* filename) {
     std::ifstream file(filename);
-    if (!file) {
-        // Пробуем разные пути
-        file.open("war_peace.txt");
-    }
-    if (!file) {
-        file.open("../src/war_peace.txt");
-    }
-    if (!file) {
-        file.open("src/war_peace.txt");
-    }
-    if (!file) {
+    if (!file.is_open()) {
         return;
     }
 
     std::string wrd;
-    char c;
+    char ch;
 
-    while (file.get(c)) {
-        if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
-            if (c >= 'A' && c <= 'Z') {
-                c = c - 'A' + 'a';
+    while (file.get(ch)) {
+        if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')) {
+            if (ch >= 'A' && ch <= 'Z') {
+                ch = ch - 'A' + 'a';
             }
-            wrd += c;
+            wrd += ch;
         } else {
             if (!wrd.empty()) {
                 tree.insert(wrd);
@@ -61,7 +51,7 @@ void printFreq(BST<std::string>& tree) {
         });
 
     std::ofstream out("result/freq.txt");
-    if (!out) {
+    if (!out.is_open()) {
         return;
     }
     for (size_t i = 0; i < nodes.size(); i++) {
